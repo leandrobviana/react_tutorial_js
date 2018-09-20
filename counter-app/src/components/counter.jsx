@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 
 class Counter extends Component {
+  componentDidUpdate(prevProps, prevState) {
+    //new Ajax
+    console.log('prevProps', prevProps);
+    console.log('prevState', prevState);
+    if (prevProps.counter.value !== this.props.counter.value) {
+      //Ajax call and get new data from the server
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('Counter - Unmount');
+  }
   //can use constructor instead of arrow function
   /* constructor() {
     super();
@@ -15,15 +27,16 @@ class Counter extends Component {
   }; */
 
   render() {
+    console.log('Count - Rendered');
     /* {this.props.children} inside return to pass as children */
-    console.log(this.props);
-    let product = { id: 1 };
+    //console.log(this.props);
+    //let product = { id: 1 };
     /* () => this.handleIncrement(product) */
     return (
       <div>
         <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
         <button
-          //onClick={}
+          onClick={() => this.props.onIncrement(this.props.counter)}
           className="btn btn-secondary btn-sm"
         >
           Increment
@@ -34,23 +47,23 @@ class Counter extends Component {
         >
           Delete
         </button>
-        <ul>
+        {/* <ul>
           {this.state.tags.map(tag => (
             <li key={tag}>{tag}</li>
           ))}
-        </ul>
+        </ul> */}
       </div>
     );
   }
 
   getBadgeClasses() {
     let classes = 'badge m-2 badge-';
-    classes += this.state.value === 0 ? 'warning' : 'primary';
+    classes += this.props.counter.value === 0 ? 'warning' : 'primary';
     return classes;
   }
 
   formatCount() {
-    const { value } = this.state;
+    const { value } = this.props.counter;
     return value === 0 ? 'Zero' : value;
   }
 }
